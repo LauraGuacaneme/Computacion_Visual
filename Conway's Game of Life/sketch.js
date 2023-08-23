@@ -1,14 +1,14 @@
 // Conaway's Game of Life
 
-let scl = 20, cols, cells;
+let scl = 20, c, cells;
 
 function setup() {
   createCanvas(700, 600);
   frameRate(5);
-  cols = floor(height / scl);
-
+  c = floor(height / scl);
+  b = new Grid(c,c);
+  b.fill_random();
   
-
   // Se crean los botones
   btn_start = createButton('Start');
   btn_pause = createButton('Pause');
@@ -24,14 +24,8 @@ function setup() {
 }
 
 function draw() {
-  background(255);
-  for ( let i = 0; i < cols ; i++) {
-    for ( let j = 0; j < cols ; j++) {
-      fill(255);
-      stroke(0);
-      rect(i * scl, j * scl, scl - 1, scl - 1);
-    }
-  }
+  background(255); 
+  b.show();
 
 }
 
@@ -41,4 +35,34 @@ class Cell {
     this.neighbours = [];
   }
 
+}
+
+class Grid {
+  constructor(n, m = n) {
+    this.cols = n;
+    this.rows = m;
+    this.board = new Array(n);
+    for (let i = 0; i < n; i++) {
+      this.board[i] = new Array(m);
+    }
+  }
+  
+  show(){
+    for ( let i = 0; i < this.cols ; i++) {
+      for ( let j = 0; j < this.rows ; j++) {
+        if ((this.board[i][j] == 1)) fill(0);
+        else fill(255);
+        stroke(0);
+        rect(i * scl, j * scl, scl - 1, scl - 1);
+      }
+    }
+  }
+
+  fill_random() {
+    for ( let i = 0; i < this.cols ; i++) {
+      for ( let j = 0; j < this.rows ; j++) {
+        this.board[i][j] = floor(random(2));
+      }
+    }
+  }
 }
