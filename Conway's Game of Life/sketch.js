@@ -2,14 +2,14 @@ let cols, rows;
 let scl = 10;
 let board;
 
-let width_menu = 210;
+let width_menu = 235;
 
 let patern = [];
 let n_patern, m_patern;
 
 function setup() {
-  createCanvas(600 + width_menu, 400);
-  frameRate(30);
+  createCanvas(600 + width_menu, 600);
+  frameRate(10);
   cols = (width - width_menu) / scl;
   rows = height / scl;
   
@@ -19,14 +19,18 @@ function setup() {
   let randomButton = createButton('Random');
   randomButton.position(10, height + 10);
   randomButton.mousePressed(randomizeGrid);
+  randomButton.class('button'); // Asigna la clase CSS al botón
+  
   
   let clearButton = createButton('Clear');
-  clearButton.position(80, height + 10);
+  clearButton.position(120, height + 10);
   clearButton.mousePressed(clearGrid);
+  clearButton.class('button'); // Asigna la clase CSS al botón
   
   let presetButton = createButton('Predeterminada');
-  presetButton.position(150, height + 10);
+  presetButton.position(400, height + 10);
   presetButton.mousePressed(predeterminada);
+  presetButton.class('button'); // Asigna la clase CSS al botón
   
   // Inicializar el tablero con valores aleatorios
   randomizeGrid();
@@ -41,11 +45,10 @@ function draw() {
   // Actualizar tablero
   update();
 
-
-
 }
 
 function show() {
+
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       let x = i * scl;
@@ -60,17 +63,27 @@ function show() {
 }
 
 function show_menu() {
-  fill(220);
-  rect( width-width_menu, 0, width_menu+1, 401);
+  fill(43,165,178);
+  rect( width-width_menu-1, 0, width_menu+1, height+1, 20);
   
   // Título
-  textSize(18);
+  textSize(19);
   fill(129, 24, 24);
-  stroke(255);
+  stroke(0);
   text("Patrones predeterminados", width - width_menu + 10, 50); 
+  textSize(11);
+  fill(0);
+  text("Presiona la tecla para establecer el patrón", width - width_menu + 15, 80); 
+  text("y luego presiona el botón 'Predeterminada'", width - width_menu + 15, 95); 
 
-  show_figure(width - width_menu + 30,120,pattern = [1,1,0,1,0,1,0,1,0],3,3,'"A"',"Boat");
-  show_figure(width - width_menu + 130,110,pattern = [1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1],4,4,'"S"',"Beacon");
+  show_figure(width - width_menu + 35, 170, [1,1,0,1,0,1,0,1,0], 3, 3,'"Q"',"Boat");
+  show_figure(width - width_menu + 135, 160, [0,1,0,1,0,1,0,1,0], 3, 3, '"W"',"Tub");
+
+  show_figure(width - width_menu + 35,330, [1,1,1],3,1,'"A"',"Blinker");
+  show_figure(width - width_menu + 135,310, [1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1],4,4,'"S"',"Beacon");
+
+  show_figure(width - width_menu + 35,470, [1,0,0,0,1,1,1,1,0],3,3,'"Z"',"Glider");
+  show_figure(width - width_menu + 135,470, [0,1,1,0,0,1,1,1,1,0,1,1,1,1,1,0,0,1,0,0],5,4,'"X"',"LWSS");
 }
 
 function show_figure(x,y,pattern,n,m,letter,name) {
@@ -79,8 +92,7 @@ function show_figure(x,y,pattern,n,m,letter,name) {
   textSize(15);
   fill(12, 8, 127);
   stroke(0);
-  text(name, x, y-15);
-
+  text(name, x+5, y-15);
 
   fill(0);
   let idx = 0;
@@ -95,7 +107,7 @@ function show_figure(x,y,pattern,n,m,letter,name) {
 
   fill(12, 8, 127);
   stroke(0);
-  text(letter, x+(n/2*scl_f), y+m*scl_f+20);
+  text(letter, x + ((n-1)/2*scl_f), y+m*scl_f+20);
 }
 
 function update() {
@@ -144,16 +156,27 @@ function clearGrid() {
 }
 
 function keyPressed() {
-  if(key === 'A' || key === 'a') {
+  if(key === 'Q' || key === 'q') {
     patern = [1,1,0,1,0,1,0,1,0];
     n_patern = m_patern = 3;
+  }else if (key === 'W' || key === 'w') {
+    patern = [0,1,0,1,0,1,0,1,0];
+    n_patern = m_patern = 3;
+  }else if (key === 'A' || key === 'a') {
+    patern = [1,1,1];
+    //frameRate(10);
+    n_patern = 1;
+    m_patern = 3;
   }else if (key === 'S' || key === 's') {
     patern = [1,1,0,0,1,0,0,0,0,0,0,1,0,0,1,1];
     n_patern = m_patern = 4;
-  }else if (key === 'D' || key === 'd') {
-    //
-  }else if (key === 'F' || key === 'f') {
-    //
+  }else if (key === 'Z' || key === 'z') {
+    patern = [1,0,0,0,1,1,1,1,0];
+    n_patern = m_patern = 3;
+  }else if (key === 'X' || key === 'x') {
+    patern = [0,1,1,0,0,1,1,1,1,0,1,1,1,1,1,0,0,1,0,0];
+    n_patern = 5;
+    m_patern = 4;
   }
 }
 
